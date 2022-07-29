@@ -58,7 +58,9 @@ def plantuml(key, value, format_, meta):
                         ["-t" + filetype, src], stderr=subprocess.STDOUT, shell=True, timeout=3,
                         universal_newlines=True)
                 except subprocess.CalledProcessError as exc:
-                    print("Status : FAIL", exc.returncode, exc.output)
+                    raise IOError(
+                        f"Status : FAIL ret: {exc.returncode}\n out: {exc.output}\n err: {exc.stderr} \n std: {exc.stdout}"
+                    )
                     raise exc
                 sys.stderr.write('Created image ' + dest + '\n')
 
