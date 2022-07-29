@@ -52,9 +52,14 @@ def plantuml(key, value, format_, meta):
                     txt = b"@startuml\n" + txt + b"\n@enduml\n"
                 with open(src, "wb") as f:
                     f.write(txt)
-
-                subprocess.check_call(PLANTUML_BIN.split() +
-                                      ["-t" + filetype, src])
+                try:
+                    output = subprocess.check_output(
+                        PLANTUML_BIN.split() +
+                        ["-t" + filetype, src], stderr=subprocess.STDOUT, shell=True, timeout=3,
+                        universal_newlines=True)
+                except subprocess.CalledProcessError as exc:
+                    print("Status : FAIL", exc.returncode, exc.output)
+                    raise exc
                 sys.stderr.write('Created image ' + dest + '\n')
 
             # Update symlink each run
