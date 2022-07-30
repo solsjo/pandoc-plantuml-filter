@@ -55,7 +55,7 @@ def plantuml(key, value, format_, meta):
                 try:
                     output = subprocess.check_output(
                         PLANTUML_BIN.split() +
-                        ["-t" + filetype, src], stderr=subprocess.STDOUT, shell=True,
+                        ["-t" + filetype, "-p", "<", src, ">", dest], stderr=subprocess.STDOUT, shell=True,
                         universal_newlines=True)
                 except subprocess.CalledProcessError as exc:
                     raise IOError(
